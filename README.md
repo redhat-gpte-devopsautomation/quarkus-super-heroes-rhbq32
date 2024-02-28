@@ -1,3 +1,13 @@
+ # Disclaimer
+
+This repo is a shallow copy from the repo and branch in the command below:
+
+```
+git clone https://github.com/quarkusio/quarkus-super-heroes --branch=rhbq-3.2 --depth=1
+```
+
+It is used by the Accelerate New App Development sales play demo and workshop.
+
 # Quarkus Superheroes Sample
 
 ## Table of Contents
