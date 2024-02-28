@@ -1,0 +1,69 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rest-fights-config
+  labels:
+    app: rest-fights
+    application: fights-service
+    system: quarkus-super-heroes
+data:
+  quarkus.liquibase-mongodb.migrate-at-start: false
+  quarkus.mongodb.hosts: fights-db:27017
+  quarkus.stork.hero-service.service-discovery.type: kubernetes
+  quarkus.stork.hero-service.service-discovery.application: rest-heroes
+  quarkus.stork.hero-service.service-discovery.refresh-period: 1H
+  quarkus.stork.hero-service.service-discovery.port-name: http
+  quarkus.stork.villain-service.service-discovery.type: kubernetes
+  quarkus.stork.villain-service.service-discovery.application: rest-villains
+  quarkus.stork.villain-service.service-discovery.refresh-period: 1H
+  quarkus.stork.villain-service.service-discovery.port-name: http
+  quarkus.otel.exporter.otlp.traces.endpoint: http://otel-collector:4317
+  kafka.bootstrap.servers: PLAINTEXT://fights-kafka:9092
+  mp.messaging.connector.smallrye-kafka.apicurio.registry.url: http://apicurio:8080/apis/registry/v2
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+    prometheus.io/scheme: http
+  labels:
+    app: apicurio
+    application: fights-service
+    system: quarkus-super-heroes
+    app.openshift.io/runtime: apicurio
+  name: apicurio
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: apicurio
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: rest-fights
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: java17-latest-rhbq-3.2
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:java17-latest-rhbq-3.2'
+      importPolicy: { }
+      referencePolicy:
+        type: Source
+    - name: native-latest-rhbq-3.2
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:native-latest-rhbq-3.2'
+      importPolicy: { }
+      referencePolicy:
+        type: Source

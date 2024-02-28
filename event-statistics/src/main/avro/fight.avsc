@@ -1,0 +1,54 @@
+{
+  "namespace": "io.quarkus.sample.superheroes.fight.schema",
+  "doc": "Fight entity",
+  "type": "record",
+  "name": "Fight",
+  "fields": [
+    {
+      "name": "id",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "fightDate",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    },
+    {
+      "name": "winnerName",
+      "type": "string"
+    },
+    {
+      "name": "winnerLevel",
+      "type": "int"
+    },
+    {
+      "name": "winnerPicture",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "loserName",
+      "type": "string"
+    },
+    {
+      "name": "loserLevel",
+      "type": "int"
+    },
+    {
+      "name": "loserPicture",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "winnerTeam",
+      "type": "string"
+    },
+    {
+      "name": "loserTeam",
+      "type": "string"
+    }
+  ]
+}

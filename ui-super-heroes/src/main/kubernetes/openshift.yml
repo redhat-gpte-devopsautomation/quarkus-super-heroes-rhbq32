@@ -1,0 +1,25 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: ui-super-heroes
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: java17-latest-rhbq-3.2
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/ui-super-heroes:java17-latest-rhbq-3.2'
+      importPolicy: { }
+      referencePolicy:
+        type: Source
+    - name: native-latest-rhbq-3.2
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/ui-super-heroes:native-latest-rhbq-3.2'
+      importPolicy: { }
+      referencePolicy:
+        type: Source
